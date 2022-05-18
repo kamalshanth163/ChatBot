@@ -1,6 +1,8 @@
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+
+import java.text.MessageFormat;
 import java.util.HashMap;
 
 public class Main {
@@ -17,5 +19,8 @@ public class Main {
             return new ThymeleafTemplateEngine().render(new ModelAndView(model, "chat-window"));
         });
 
+        Spark.post("/chat", (request, response) -> {
+            return MessageFormat.format("You said {0}", request.queryParams("question"));
+        });
     }
 }
