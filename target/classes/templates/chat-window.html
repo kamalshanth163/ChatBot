@@ -27,19 +27,20 @@
         position: fixed;
         bottom: 0px;
         left: 0px;
-        border-radius: 10px;
+        border-radius: 50px;
         border: none;
         margin: 10px;
         background: #ECECEC;
         color: black;
+        outline: 0px;
     }
-    #askBtn{
+    #sendBtn{
         position: fixed;
         bottom: 0px;
         right: 0;
         width: 100px;
         height: 60px;
-        border-radius: 10px;
+        border-radius: 50px;
         border: none;
         padding: 10px;
         background: #111;
@@ -60,7 +61,7 @@
     }
     #botChat{
         border-radius: 50px 50px 50px 0px;
-        background: #5947AA ;
+        background: #4C6DFF;
         color: white;
         float: left;
     }
@@ -91,12 +92,12 @@
 <div class="input-area">
     <div class="row">
         <div class="col-12">
-            <input id="questionInput" type="textarea" placeholder="Ask me anything.."/>
+            <input id="questionInput" type="textarea" placeholder="Say or ask something.."/>
         </div>
     </div>
     <div class="row">
         <div class="col-4">
-            <button id="askBtn">Ask</button>
+            <button id="sendBtn">Send</button>
         </div>
     </div>
 
@@ -107,7 +108,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script>
-    $("#askBtn").click(function(){
+    $("#sendBtn").click(function(){
         var question = $("#questionInput").val();
         var userChat = `
             <div class="row">
