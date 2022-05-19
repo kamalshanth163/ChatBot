@@ -20,7 +20,7 @@
         bottom: 10px;
         padding: 40px;
     }
-    #questionInput{
+    #userInput{
         width: 470px;
         font-size: 24px;
         padding: 14px 30px;
@@ -52,21 +52,23 @@
     .chat {
         width: auto;
         max-width: 400px;
+        height: auto;
         border-radius: 50px;
         border: none;
         padding: 10px;
         margin: 10px;
         font-size: 24px;
         padding: 10px 30px;
+
     }
     #botChat{
-        border-radius: 50px 50px 50px 0px;
-        background: #4C6DFF;
-        color: white;
+        border-radius: 6px 30px 30px 30px;
+        background: #E7E7E7;
+        color: #222;
         float: left;
     }
     #userChat{
-        border-radius: 50px 50px 0px 50px;
+        border-radius: 30px 30px 6px 30px;
         background: #37A154;
         color: white;
         float: right;
@@ -77,22 +79,55 @@
         font-style: italic;
         padding: 10px 20px;
     }
+    #conversation {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: 660px;
+    }
+    #packageTypes li {
+        border-radius: 30px;
+        border: none;
+        padding: 10px;
+        background: #111;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px;
+        text-decoration: none;
+        list-style: none;
+        padding: 10px 20px;
+    }
+    #packages li {
+        border-radius: 30px;
+        border: none;
+        background: #111;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px;
+        text-decoration: none;
+        list-style: none;
+        padding: 10px 20px;
+    }
     </style>
 </head>
 <body>
 
+<img src="../bot.png"/>
+
 <div id="conversation">
     <div class="row">
         <div class="col-12">
-            <div id="botChat" class="chat">Hi there! How can I help you?</div>
+            <div id="botChat" class="chat">Hi there! I'm Vikram, Your virtual guide. How can I help you?</div>
         </div>
     </div>
+    <a id="bottomOfDiv"></a>
 </div>
 
 <div class="input-area">
     <div class="row">
         <div class="col-12">
-            <input id="questionInput" type="textarea" placeholder="Say or ask something.."/>
+            <input id="userInput" type="textarea" placeholder="Say or ask something.."/>
         </div>
     </div>
     <div class="row">
@@ -100,7 +135,6 @@
             <button id="sendBtn">Send</button>
         </div>
     </div>
-
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -108,12 +142,29 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script>
+
+    function selectOption(code) {
+        var userInput = `${code}`;
+
+        $.post("/chat", {userInput: userInput}, function(result){
+            var botChat = `
+                <div class="row">
+                    <div class="col-12">
+                        <div id="botChat" class="chat">${result}</div>
+                    </div>
+                </div>`
+            $(botChat).delay(2000).appendTo($("#conversation"));
+        })
+    }
+
     $("#sendBtn").click(function(){
-        var question = $("#questionInput").val();
+
+        var userInput = $("#userInput").val();
+
         var userChat = `
             <div class="row">
                 <div class="col-12">
-                    <div id="userChat" class="chat">${question}</div>
+                    <div id="userChat" class="chat">${userInput}</div>
                 </div>
             </div>`
         $(userChat).appendTo($("#conversation"));
@@ -124,7 +175,7 @@
 
         myTimeout = setTimeout( function() {
             $("#loading").remove();
-            $.post("/chat", {question: question}, function(result){
+            $.post("/chat", {userInput: userInput}, function(result){
                 var botChat = `
                     <div class="row">
                         <div class="col-12">
@@ -133,10 +184,11 @@
                     </div>`
                 $(botChat).delay(2000).appendTo($("#conversation"));
             })
-        }, 2000);
+        }, 1000);
 
-        $("#questionInput").val("");
+        $("#userInput").val("");
     });
+
 </script>
 </body>
 </html>

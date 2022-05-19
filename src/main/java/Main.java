@@ -2,7 +2,6 @@ import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 
 public class Main {
@@ -20,7 +19,26 @@ public class Main {
         });
 
         Spark.post("/chat", (request, response) -> {
-            return MessageFormat.format("You said {0}", request.queryParams("question"));
+
+            var userInput = request.queryParams("userInput").toLowerCase().replaceAll("\\s", "");
+
+            Inputs inputs = new Inputs();
+
+            String greetings = inputs.removeSpaces(inputs.greetings);
+            String questions = inputs.removeSpaces(inputs.questions);
+
+            if(userInput.length() == 0) return "Say or ask something..";
+
+            if(greetings.contains(userInput)){
+                Greetings model = new Greetings();
+                return model.getReply(userInput);
+            }
+            else if(questions.contains(userInput)){
+                Questions model = new Questions();
+                return model.getReply(userInput);
+            }
+
+            return "Ooops.. To better understand how this all works, I recommend you give it a try. <a href='https://www.google.com' target='_blank'>learn more</a>";
         });
     }
 }
