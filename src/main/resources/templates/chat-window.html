@@ -157,36 +157,88 @@
         })
     }
 
+    function areEqual(input1, input2){
+        var rawInput1 = input1.toLowerCase().replace(/\s/g, '');
+        var rawInput2 = input2.toLowerCase().replace(/\s/g, '');
+        return rawInput1 == rawInput2;
+    }
+
+    function appendBotChat(text){
+        myTimeout = setTimeout( function() {
+            $("#loading").remove();
+            var botChat = `
+                <div class="row">
+                    <div class="col-12">
+                        <div id="botChat" class="chat">${text}</div>
+                    </div>
+                </div>`
+            $(botChat).delay(2000).appendTo($("#conversation"));
+        }, 1000);
+        $("#userInput").val("");
+    }
+
+    var previousUserInput = "";
+    var previousCount = 0*1;
+
     $("#sendBtn").click(function(){
 
         var userInput = $("#userInput").val();
 
+        // checking for repeating inputs from the user
+        if(areEqual(userInput, previousUserInput)){
+            var newCount = previousCount * 1 + 1;
+            previousCount = newCount;
+        }
+        else {
+            previousUserInput = userInput;
+            previousCount = 1*1;
+        }
+
+        // displaying user input to the chat screen
         var userChat = `
-            <div class="row">
-                <div class="col-12">
-                    <div id="userChat" class="chat">${userInput}</div>
-                </div>
-            </div>`
+        <div class="row">
+            <div class="col-12">
+                <div id="userChat" class="chat">${userInput}</div>
+            </div>
+        </div>`
+
         $(userChat).appendTo($("#conversation"));
-
         var loading = `<div id="loading">Thinking...</div>`
-
         $(loading).appendTo($("#conversation"));
 
-        myTimeout = setTimeout( function() {
-            $("#loading").remove();
-            $.post("/chat", {userInput: userInput}, function(result){
-                var botChat = `
-                    <div class="row">
-                        <div class="col-12">
-                            <div id="botChat" class="chat">${result}</div>
-                        </div>
-                    </div>`
-                $(botChat).delay(2000).appendTo($("#conversation"));
-            })
-        }, 1000);
-
-        $("#userInput").val("");
+        if(previousCount == 1) {
+            appendBotChat("Hmm.. Sounds like you're repeating yourself")
+        }
+        else if(previousCount == 2) {
+            appendBotChat("Please don't waste my time..")
+        }
+        else if(previousCount == 3){
+            appendBotChat("Are we really doing this??")
+        }
+        else if(previousCount == 4){
+            appendBotChat("I aaam done!!")
+        }
+        else if(previousCount == 5){
+            appendBotChat("#GoHome")
+        }
+        else if(previousCount >= 6){
+            appendBotChat("m]m")
+        }
+        else {
+            myTimeout = setTimeout( function() {
+                $("#loading").remove();
+                $.post("/chat", {userInput: userInput}, function(result){
+                    var botChat = `
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="botChat" class="chat">${result}</div>
+                            </div>
+                        </div>`
+                    $(botChat).delay(2000).appendTo($("#conversation"));
+                })
+            }, 1000);
+            $("#userInput").val("");
+        }
     });
 
 </script>

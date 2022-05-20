@@ -13,30 +13,74 @@ public class Questions {
                 new String[] {
                     "<p>Pick one package type</p>" +
                         "<ul id='packageTypes'>" +
-                        "<li onclick=\"selectOption('pt1')\">Wild life</li>" +
-                        "<li onclick=\"selectOption('pt2')\">Culture</li>" +
-                        "<li onclick=\"selectOption('pt3')\">Adventure</li>" +
+                        "<li onclick=\"selectOption('Wild life')\">Wild life</li>" +
+                        "<li onclick=\"selectOption('Culture')\">Culture</li>" +
+                        "<li onclick=\"selectOption('Adventure')\">Adventure</li>" +
                         "</ul>"
                 });
 
+        // package types
         knowledge.put(
-                new String[] {"pt1"},
+                new String[] {"Wild life", "Wild life tour"},
                 new String[] {
-                    "<p>Wild life packages for you</p>" +
+                    "<p>Wild life tour packages for you</p>" +
                         "<ul id='packages'>" +
-                        "<li onclick=\"selectOption('p1')\">" +
+                        "<li>" +
                             "<div>\n" +
-                            "   <h3>Wild life tour in kandy</h3>\n" +
+                            "   <h3>Wild life tour in Kandy</h3>\n" +
                             "   <h4>LKR 1200.00</h4>\n" +
                             "</div>" +
                         "</li>" +
-                        "<li onclick=\"selectOption('p2')\">" +
+                        "<li>" +
                             "<div>\n" +
-                            "   <h3>Safari tour in colombo</h3>\n" +
+                            "   <h3>Safari tour in Colombo</h3>\n" +
                             "   <h4>LKR 2200.00</h4>\n" +
                             "</div>" +
                         "</li>" +
-                        "</ul>"
+                        "</ul>" +
+                    "<a href='https://www.google.com' target='_blank'>learn more</a>"
+                });
+
+        knowledge.put(
+                new String[] {"Culture", "Culture tour"},
+                new String[] {
+                    "<p>Culture tour packages for you</p>" +
+                        "<ul id='packages'>" +
+                        "<li>" +
+                        "<div>\n" +
+                        "   <h3>Culture tour in Galle</h3>\n" +
+                        "   <h4>LKR 1200.00</h4>\n" +
+                        "</div>" +
+                        "</li>" +
+                        "<li>" +
+                        "<div>\n" +
+                        "   <h3>Culture tour in Jaffna</h3>\n" +
+                        "   <h4>LKR 2200.00</h4>\n" +
+                        "</div>" +
+                        "</li>" +
+                        "</ul>" +
+                        "<a href='https://www.google.com' target='_blank'>learn more</a>"
+                });
+
+        knowledge.put(
+                new String[] {"Adventure", "Adventure tour"},
+                new String[] {
+                    "<p>Adventure tour packages for you</p>" +
+                        "<ul id='packages'>" +
+                        "<li>" +
+                        "<div>\n" +
+                        "   <h3>Adventure tour in Trincomalee</h3>\n" +
+                        "   <h4>LKR 1200.00</h4>\n" +
+                        "</div>" +
+                        "</li>" +
+                        "<li>" +
+                        "<div>\n" +
+                        "   <h3>Adventure tour in Nuwara eliya</h3>\n" +
+                        "   <h4>LKR 2200.00</h4>\n" +
+                        "</div>" +
+                        "</li>" +
+                        "</ul>" +
+                        "<a href='https://www.google.com' target='_blank'>learn more</a>"
                 });
     }
 
