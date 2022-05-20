@@ -8,6 +8,8 @@ public class Questions {
     public Questions()
     {
         knowledge = new HashMap<String[], String[]>();
+
+        // package types
         knowledge.put(
                 new String[] {"What packages", "What are the packages", "Package", "Packages", "Package details"},
                 new String[] {
@@ -19,7 +21,7 @@ public class Questions {
                         "</ul>"
                 });
 
-        // package types
+        // packages
         knowledge.put(
                 new String[] {"Wild life", "Wild life tour"},
                 new String[] {

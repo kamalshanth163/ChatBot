@@ -59,7 +59,6 @@
         margin: 10px;
         font-size: 24px;
         padding: 10px 30px;
-
     }
     #botChat{
         border-radius: 6px 30px 30px 30px;
@@ -282,13 +281,10 @@
             appendBotChat("Are we really doing this??")
         }
         else if(previousCount == 5){
-            appendBotChat("I aaam done!!")
+            appendBotChat("I am done!!")
         }
-        else if(previousCount == 6){
+        else if(previousCount >= 6){
             appendBotChat("#GoHome")
-        }
-        else if(previousCount >= 7){
-            appendBotChat("m]m")
         }
         else {
             myTimeout = setTimeout( function() {
