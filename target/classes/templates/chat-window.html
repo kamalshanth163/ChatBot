@@ -90,7 +90,7 @@
         padding: 10px;
         background: #111;
         color: white;
-        font-size: 16px;
+        font-size: 24px;
         cursor: pointer;
         margin: 10px;
         text-decoration: none;
@@ -102,7 +102,33 @@
         border: none;
         background: #111;
         color: white;
-        font-size: 16px;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 10px;
+        text-decoration: none;
+        list-style: none;
+        padding: 10px 20px;
+    }
+    #trainMeBtn{
+        border-radius: 30px;
+        border: none;
+        padding: 10px;
+        background: #111;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 10px;
+        text-decoration: none;
+        list-style: none;
+        padding: 10px 20px;
+    }
+    #stopTrainingBtn{
+        border-radius: 30px;
+        border: none;
+        padding: 10px;
+        background: #F65959 ;
+        color: white;
+        font-size: 20px;
         cursor: pointer;
         margin: 10px;
         text-decoration: none;
@@ -143,13 +169,53 @@
 
 <script>
 
-    localStorage.setItem("userInput", "");
-    localStorage.setItem("count", 0*1);
+    var previousUserInput = "";
+    var previousCount = 0;
+
+    localStorage.setItem("trainingUserInput", "");
+
+    var currentMode = "Default";
+
+    function startTraining() {
+        var userInput = `Train me`;
+        currentMode = "Training";
+
+        localStorage.setItem("trainingUserInput", previousUserInput);
+
+        $.post("/chat", {userInput: userInput, expectedReply: ""}, function(result){
+            var botChat = `
+                <div class="row">
+                    <div class="col-12">
+                        <div id="botChat" class="chat">${result}
+                            <h4>"${previousUserInput}"<h4>
+
+                            <button id="stopTrainingBtn" onclick="stopTraining()">Stop</button>
+                        </div>
+                    </div>
+                </div>`
+            $(botChat).delay(2000).appendTo($("#conversation"));
+        })
+    }
+
+    function stopTraining() {
+        var userInput = `Stop training`;
+        currentMode = "Default";
+
+        $.post("/chat", {userInput: userInput, expectedReply: ""}, function(result){
+            var botChat = `
+                <div class="row">
+                    <div class="col-12">
+                        <div id="botChat" class="chat">${result}</div>
+                    </div>
+                </div>`
+            $(botChat).delay(2000).appendTo($("#conversation"));
+        })
+    }
 
     function selectOption(code) {
         var userInput = `${code}`;
 
-        $.post("/chat", {userInput: userInput}, function(result){
+        $.post("/chat", {userInput: userInput, expectedReply: ""}, function(result){
             var botChat = `
                 <div class="row">
                     <div class="col-12">
@@ -180,29 +246,18 @@
         $("#userInput").val("");
     }
 
-    var previousUserInput = "";
-    var previousCount = 0*1;
-
     $("#sendBtn").click(function(){
 
         var userInput = $("#userInput").val();
 
-<!--        var previousUserInput = localStorage.getItem("userInput");-->
-<!--        var previousCount = localStorage.getItem("count");-->
-
-
         // checking for repeating inputs from the user
         if(areEqual(userInput, previousUserInput)){
-            var newCount = previousCount * 1 + 1;
-<!--            localStorage.setItem("count", newCount);-->
+            var newCount = previousCount + 1;
             previousCount = newCount;
         }
         else {
-<!--            localStorage.setItem("userInput", userInput);-->
-<!--            localStorage.setItem("count", 1*1);-->
-
             previousUserInput = userInput;
-            previousCount = 1*1;
+            previousCount = 1;
         }
 
         // displaying user input to the chat screen
@@ -220,33 +275,53 @@
         if(previousCount == 2) {
             appendBotChat("Hmm.. Sounds like you're repeating yourself")
         }
-        else if(previousCount == 2) {
+        else if(previousCount == 3) {
             appendBotChat("Please don't waste my time..")
         }
-        else if(previousCount == 3){
+        else if(previousCount == 4){
             appendBotChat("Are we really doing this??")
         }
-        else if(previousCount == 4){
+        else if(previousCount == 5){
             appendBotChat("I aaam done!!")
         }
-        else if(previousCount == 5){
+        else if(previousCount == 6){
             appendBotChat("#GoHome")
         }
-        else if(previousCount >= 6){
+        else if(previousCount >= 7){
             appendBotChat("m]m")
         }
         else {
             myTimeout = setTimeout( function() {
                 $("#loading").remove();
-                $.post("/chat", {userInput: userInput}, function(result){
-                    var botChat = `
-                        <div class="row">
-                            <div class="col-12">
-                                <div id="botChat" class="chat">${result}</div>
-                            </div>
-                        </div>`
-                    $(botChat).delay(2000).appendTo($("#conversation"));
-                })
+
+                if(currentMode == "Training") {
+
+                    var trainingUserInput = localStorage.getItem("trainingUserInput");
+
+                    $.post("/chat", {userInput: trainingUserInput, expectedReply: userInput}, function(result){
+                        var botChat = `
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="botChat" class="chat">${result}</div>
+                                </div>
+                            </div>`
+                        $(botChat).delay(2000).appendTo($("#conversation"));
+                    })
+
+                    currentMode = "Default";
+                }
+                else {
+                    $.post("/chat", {userInput: userInput, expectedReply: ""}, function(result){
+                        var botChat = `
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="botChat" class="chat">${result}</div>
+                                </div>
+                            </div>`
+                        $(botChat).delay(2000).appendTo($("#conversation"));
+                    })
+                }
+
             }, 1000);
             $("#userInput").val("");
         }

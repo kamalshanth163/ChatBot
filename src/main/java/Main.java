@@ -21,24 +21,42 @@ public class Main {
         Spark.post("/chat", (request, response) -> {
 
             var userInput = request.queryParams("userInput").toLowerCase().replaceAll("\\s", "");
+            var expectedReply = request.queryParams("expectedReply");
 
             Inputs inputs = new Inputs();
 
             String greetings = inputs.removeSpaces(inputs.greetings);
             String questions = inputs.removeSpaces(inputs.questions);
 
+            var defaultResponse = "Ooops.. To better understand how this all works, I recommend you to <a href='https://www.google.com' target='_blank'>learn more</a>.<hr />" +
+                    "<button id='trainMeBtn' onclick=\"startTraining()\">Train me</button>";
+
             if(userInput.length() == 0) return "Say or ask something..";
 
-            if(greetings.contains(userInput)){
-                Greetings model = new Greetings();
-                return model.getReply(userInput);
+            if(expectedReply == ""){
+                if(greetings.contains(userInput)){
+                    Greetings model = new Greetings();
+                    return model.getReply(userInput);
+                }
+                else if(questions.contains(userInput)){
+                    Questions model = new Questions();
+                    return model.getReply(userInput);
+                }
+                else {
+                    String reply = Learnings.getReply(userInput);
+                    if(reply == ""){
+                        return defaultResponse;
+                    }
+                    else {
+                        return reply;
+                    }
+                }
             }
-            else if(questions.contains(userInput)){
-                Questions model = new Questions();
-                return model.getReply(userInput);
+            else {
+                String reply = Learnings.getReply(userInput);
+                System.out.println("reply: " + reply);
+                return Learnings.trainMe(userInput, expectedReply);
             }
-
-            return "Ooops.. To better understand how this all works, I recommend you give it a try. <a href='https://www.google.com' target='_blank'>learn more</a>";
         });
     }
 }

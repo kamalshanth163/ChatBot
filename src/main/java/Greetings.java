@@ -23,7 +23,7 @@ public class Greetings {
             String lowercaseKey = String.join("", key).toLowerCase().replaceAll("\\s", "");
             String lowercaseInput = userInput.toLowerCase();
 
-            if(lowercaseKey.contains((lowercaseInput))){
+            if(lowercaseKey.contains(lowercaseInput)){
                 String[] replies = knowledge.get(key);
                 Random random = new Random();
                 int  n  =  random.nextInt(replies.length);

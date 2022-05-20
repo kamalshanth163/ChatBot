@@ -82,6 +82,22 @@ public class Questions {
                         "</ul>" +
                         "<a href='https://www.google.com' target='_blank'>learn more</a>"
                 });
+
+        knowledge.put(
+                new String[] {"Train me"},
+                new String[] {
+                        "<div>\n" +
+                        "   <p>What would be your expected reply for.. </p>\n" +
+                        "</div>"
+                });
+
+        knowledge.put(
+                new String[] {"Stop training"},
+                new String[] {
+                        "<div>\n" +
+                        "   <p>Training has stopped.. Say or ask something else..</p>\n" +
+                        "</div>"
+                });
     }
 
     public String getReply(String userInput){
@@ -90,7 +106,7 @@ public class Questions {
             String lowercaseKey = String.join("", key).toLowerCase().replaceAll("\\s", "");
             String lowercaseInput = userInput.toLowerCase();
 
-            if(lowercaseKey.contains((lowercaseInput))){
+            if(lowercaseKey.contains(lowercaseInput)){
                 String[] replies = knowledge.get(key);
                 Random random = new Random();
                 int  n  =  random.nextInt(replies.length);
@@ -99,8 +115,4 @@ public class Questions {
         }
         return "Oops.. say something else";
     }
-//
-//    public String[] getPackages(){
-//        var packages =
-//    }
 }

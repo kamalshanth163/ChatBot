@@ -8,7 +8,9 @@ public class Inputs {
     public String[] questions = {
             "What packages", "What are the packages", "Package", "Packages", "Package details",
             "Wild life", "Culture", "Adventure",
-            "Wild life tour", "Culture tour", "Adventure tour"
+            "Wild life tour", "Culture tour", "Adventure tour",
+            "Train me",
+            "Stop training",
     };
 
     public String removeSpaces(String[] inputs){
